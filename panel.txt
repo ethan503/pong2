@@ -1,0 +1,107 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Random;
+
+import javax.swing.*;
+
+public class Panel28 extends JPanel implements ActionListener{
+	
+	int screenW = 600;
+	int screenH = 500;
+	int ballY = 100;
+	int ballW = 15;
+	int ballH = 15;
+	int velocityY = 2;
+	int ballV = 8;
+	Timer timer;
+	Rectangle rectangle;
+	Random random = new Random();
+	int ballX = random.nextInt(600);
+	
+	
+
+	
+	Panel28() {
+		this.setPreferredSize(new Dimension(screenW,screenH));
+		this.setBackground(Color.black);
+		this.setFocusable(true);
+		this.requestFocus();
+		timer = new Timer(10, this);
+		timer.start();
+		int paddleY = 460;
+		int paddleX = screenW/2;
+		int paddleW = 100;
+		int paddleH = 15;
+		
+		rectangle = new Rectangle(paddleX, paddleY, paddleW, paddleH);
+		
+		this.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				int code = e.getKeyCode();
+				if(code == KeyEvent.VK_D) {
+					rectangle.setLocation(rectangle.x + ballV, rectangle.y);
+					repaint();
+				}
+				if(code == KeyEvent.VK_A) {
+					rectangle.setLocation(rectangle.x - ballV, rectangle.y);
+					repaint();
+				}
+				rectangle.x = Math.max(0, Math.min(rectangle.x, screenW - rectangle.width));
+				
+			}
+
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.white);
+		g.fillRect(rectangle.x,	rectangle.y, rectangle.width, rectangle.height);
+		
+		g.setColor(Color.white);
+		g.fillOval(ballX, ballY, 15, 15);
+		
+		if(ballY > 500) {
+			gameOver(g);
+		}
+	}
+
+	public void gameOver(Graphics g) {
+		g.setColor(Color.red);
+		g.setFont(new Font("Ink Free",Font.BOLD, 75));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+		g.drawString("game over", (screenW - metrics.stringWidth("game over"))/2, screenH/2);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		ballY = ballY + velocityY;
+		if(ballY == -10) {
+			ballY = 0;
+			ballX = random.nextInt(600);
+			velocityY = -velocityY;
+		}
+		
+		
+		if(rectangle.intersects(ballX, ballY, ballW, ballH)) {
+			velocityY = -velocityY;
+		}
+		
+		repaint();
+		
+	}
+	
+	
+}

@@ -1,0 +1,28 @@
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.*;
+
+
+public class Frame28 extends JFrame{
+	
+	Frame28() {
+		
+		
+		final Panel28 panel = new Panel28();
+		this.add(panel);
+		this.setTitle("why are we here....just to suffer3");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		this.pack();
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		this.addWindowListener(new WindowAdapter() {
+	        public void windowOpened(WindowEvent e) {
+	            panel.requestFocusInWindow();
+	        }
+	    });
+	}
+
+}
+
